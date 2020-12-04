@@ -63,13 +63,13 @@ namespace PrimeNumber2
 
             }
         }
+
         private void CheckPrime_Click(object sender, RoutedEventArgs e)
         {
             
             CollapseOtherViews("checkPrimeGrid");
                                    
         }
-
 
         private void GOcheckPrime_Click(object sender, RoutedEventArgs e)
         {
@@ -123,9 +123,7 @@ namespace PrimeNumber2
         {
             //nasconde Welcome mostra griglia list prime insert view
             CollapseOtherViews("insertGridLP");
-            
            
-            //showLP.Text = "qua ci va la lista";
         }
 
 
@@ -141,12 +139,7 @@ namespace PrimeNumber2
 
             List<string> read = p.ListOfPrime(lowerBound, upperBound);
 
-            //List<string> prova = new List<string> { "prima", "seconda", "tre" };
             showLP.Text = string.Join(", ", read);
-            
-
-                        
-
         }
 
         private void SAVElistPrime_Click(object sender, RoutedEventArgs e)

@@ -7,19 +7,20 @@
         mc:Ignorable="d"
         Title="PrimeCalculator" Height="auto" Width="auto">
 
-    <!-- Main Grid -->
-    <Grid>
+    
+    <Grid x:Name="MainGrid"
+          Style="{StaticResource BaseGrid}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="Left"></ColumnDefinition>
-            <ColumnDefinition Name="Right"></ColumnDefinition>
+            <ColumnDefinition x:Name="Left"></ColumnDefinition>
+            <ColumnDefinition x:Name="Right"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Name="Top"
+            <RowDefinition x:Name="Top"
                            Height="3*"></RowDefinition>
-            <RowDefinition Name="Middle"
+            <RowDefinition x:Name="Middle"
                            Height="*"></RowDefinition>
-            <RowDefinition Name="Bottom"
+            <RowDefinition x:Name="Bottom"
                            Height="*"></RowDefinition>
             <RowDefinition x:Name="Footer" Height="100"></RowDefinition>
         </Grid.RowDefinitions>
@@ -44,18 +45,19 @@
         <TextBlock x:Name="cpExp"
             Grid.Column="0"
             Grid.Row="2"
-            Margin="30"
-            HorizontalAlignment="Center"
+            Style="{StaticResource GenericTextBlock}"
             >
              Use this function to check if a Number is Prime or not.
             <LineBreak></LineBreak>
-            It also allows to save and export the data to a textFile.
+            It also allows to save and export data to a textFile.
         </TextBlock>
 
         <!-- Single Prime Number Grid-->
         <Grid x:Name="checkPrimeGrid"
+              Style="{StaticResource BaseGrid}"
               Visibility="Collapsed"
               Grid.ColumnSpan="2">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -67,13 +69,13 @@
                  Grid.Column="0"
                  Grid.Row="0"
                  Style="{StaticResource GenericTextBox}"
-                 >Inserisci numero
+                 >Insert Value
             </TextBox>
 
             <Button x:Name="GOcheckPrime"
                     Grid.Column="1"
                     Style="{StaticResource GenericButton}"
-                    Click="GOcheckPrime_Click">GO
+                    Click="GOcheckPrime_Click">Check
             </Button>
 
             <Label Name="showIsPrime"
@@ -88,7 +90,7 @@
             <Button x:Name="SAVEcheckPrime"
                     Grid.Column="3"
                     Style="{StaticResource GenericButton}"
-                    Click="SAVEcheckPrime_Click">SAVE
+                    Click="SAVEcheckPrime_Click">Save...
             </Button>
         </Grid>
 
@@ -106,16 +108,16 @@
         <TextBlock x:Name="lpExp"
             Grid.Column="1"
             Grid.Row="2"
-            Margin="30"
-            HorizontalAlignment="Center"
+            Style="{StaticResource GenericTextBlock }"
             >
              Use this function to obtain a list of prime numbers.
             <LineBreak></LineBreak>
-            It also allows to save and export the data to a textFile.
+            It also allows to save and export data to a textFile.
         </TextBlock>
 
         <!-- list prime insert view -->
         <Grid x:Name="insertGridLP"
+              Style="{StaticResource BaseGrid}"
             Grid.ColumnSpan="2"
               Visibility="Collapsed">
 
@@ -142,20 +144,22 @@
                  Grid.Row="0"
                 Style="{StaticResource GenericTextBox}">
                 Insert Upper Bound</TextBox>
-            
+
             <Button x:Name="GOlistPrime"
                     Grid.ColumnSpan="2"
                     Grid.Row="1"
                     Style="{StaticResource GenericButton}"
-                    Click="GOlistPrime_Click">GO
+                    Click="GOlistPrime_Click">Result...
             </Button>
 
         </Grid>
 
         <!-- list prime show grid -->
         <Grid x:Name="showGridLP"
+              Style="{StaticResource BaseGrid}"
             Grid.ColumnSpan="2"
               Visibility="Collapsed">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -164,17 +168,15 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TextBlock x:Name="showLP"
                        Grid.Column="0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       TextWrapping="WrapWithOverflow" 
+                       Style="{StaticResource GenericTextBlock}" 
                        >
                 </TextBlock>
             </ScrollViewer>
-            
+
             <Button x:Name="SAVElistPrime"
                     Grid.Column="1"
                     Style="{StaticResource GenericButton}"
-                    Click="SAVElistPrime_Click">SAVE</Button>
+                    Click="SAVElistPrime_Click">Save...</Button>
 
 
         </Grid>
@@ -183,7 +185,7 @@
                 Grid.ColumnSpan="2"
                 Grid.Row="3"
                 Style="{StaticResource GenericButton}"
-                Click="toMain_Click">Back
+                Click="toMain_Click">Back to Main
         </Button>
 
     </Grid>

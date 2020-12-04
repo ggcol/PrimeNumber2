@@ -23,42 +23,42 @@ namespace PrimeNumber2.Models
     
     public List<string> ListOfPrime(long lowerBound, long upperBound)
         {
-            long max = 10000;
-            List<PrimeNumber> exit= new List<PrimeNumber>();
+            //check per popolazione DB
+            long max = 735839;
+            List<string> exit= new List<string>();
             List<string> stringexit = new List<string>();
 
             if (upperBound > max)
             {
-                stringexit.Add("This number is too high.");
-                //do nth
+                exit.Add("This number is too high.");
+                
             } else if (lowerBound < 2)
             {
-                stringexit.Add("No Prime Number < 2 for definition.");
-                //do nth
+                exit.Add("No Prime Number < 2 for definition.");
+                
+            } else if (lowerBound == upperBound) {
+                if (IsPrime(lowerBound)) 
+                {
+                    exit.Add($"Lucky shoot. {lowerBound} is a prime number!");
+                } else
+                {
+                    exit.Add("You should enter a wider range");
+                }
+
             } else
             {
                 using (var context = new NumbersContext())
                 {
                     exit = context.PrimeNumbers
                         .Where(p => p.IDN >= lowerBound && p.IDN <= upperBound)
+                        .Select(p => p.IDN.ToString())
                         .ToList();
                 }
 
-                foreach (PrimeNumber pn in exit)
-                {
-                    stringexit.Add(pn.IDN.ToString());
-                }
-                return stringexit;
-
             }
 
-            return stringexit;
+            return exit;
 
-        }
-
-        public new string ToString()
-        {
-            return this.IDN.ToString();
         }
 
     
