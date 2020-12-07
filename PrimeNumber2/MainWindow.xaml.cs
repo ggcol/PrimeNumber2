@@ -26,6 +26,9 @@ namespace PrimeNumber2
         public MainWindow()
         {
             InitializeComponent();
+
+            Number n = new Number();
+            Task.Run(new Action(() => n.IsPrimeImpl()));
         }
 
         /// <summary>
@@ -73,12 +76,12 @@ namespace PrimeNumber2
 
         private void GOcheckPrime_Click(object sender, RoutedEventArgs e)
         {
-            PrimeNumber p = new PrimeNumber
+            Number p = new Number
             {
                 IDN = Convert.ToInt64(insertPrime.Text)
             };
 
-            if (p.IsPrime(p.IDN))
+            if (p.IsPrime2(p.IDN))
             {
                 showIsPrime.Content = "Is Prime!";
             } else
@@ -135,7 +138,7 @@ namespace PrimeNumber2
             long lowerBound = Convert.ToInt64(insertLowerBound.Text);
             long upperBound = Convert.ToInt64(insertUpperBound.Text);
 
-            PrimeNumber p = new PrimeNumber();
+            Number p = new Number();
 
             List<string> read = p.ListOfPrime(lowerBound, upperBound);
 

@@ -9,7 +9,7 @@ namespace PrimeNumber2
 {
     class NumbersContext : DbContext
     {
-        public virtual DbSet<PrimeNumber> PrimeNumbers { get; set; }
+        public virtual DbSet<Number> Numbers { get; set; }
 
         public NumbersContext() { }
 
@@ -17,21 +17,26 @@ namespace PrimeNumber2
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(@"Data Source=ABUWIN-MK-IV2;Initial Catalog=Numbers;Integrated Security=True");
+                .UseSqlServer(@"Data Source=ABUWIN-MK-IV2;Initial Catalog=abuNumbers;Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PrimeNumber>(entity =>
+            modelBuilder.Entity<Number>(entity =>
             {
-                entity.HasKey(k => k.IDN);
+                entity.HasKey(e => e.Position);
 
                 entity.Property(e => e.IDN)
                 .ValueGeneratedNever()
                 .HasColumnName("IDN")
                 .HasColumnType("bigint");
+
+                entity.Property(e => e.Position)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("Position")
+                .HasColumnType("Guid");
             });
         }
 
