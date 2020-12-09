@@ -27,8 +27,15 @@ namespace PrimeNumber2
         {
             InitializeComponent();
 
+            //Number n = new Number();
+            //Task.Run(new Action(() => n.ContinuosCalc()));
+            BgCalcAsync();
+        }
+
+        public async void BgCalcAsync()
+        {
             Number n = new Number();
-            Task.Run(new Action(() => n.ContinuosCalc()));
+            await Task.Run(new Action(() => n.ContinuosCalc()));
         }
 
         /// <summary>
@@ -44,24 +51,35 @@ namespace PrimeNumber2
                     checkPrimeGrid.Visibility = Visibility.Collapsed;
                     insertGridLP.Visibility = Visibility.Collapsed;
                     showGridLP.Visibility = Visibility.Collapsed;
+                    nthPrimeNumberGrid.Visibility = Visibility.Collapsed;
                     break;
                 case "checkPrimeGrid":
                     Welcome.Visibility = Visibility.Collapsed;
                     checkPrimeGrid.Visibility = Visibility.Visible;
                     insertGridLP.Visibility = Visibility.Collapsed;
                     showGridLP.Visibility = Visibility.Collapsed;
+                    nthPrimeNumberGrid.Visibility = Visibility.Collapsed;
                     break;
                 case "insertGridLP":
                     Welcome.Visibility = Visibility.Collapsed;
                     checkPrimeGrid.Visibility = Visibility.Collapsed;
                     insertGridLP.Visibility = Visibility.Visible;
                     showGridLP.Visibility = Visibility.Collapsed;
+                    nthPrimeNumberGrid.Visibility = Visibility.Collapsed;
                     break;
                 case "showGridLP":
                     Welcome.Visibility = Visibility.Collapsed;
                     checkPrimeGrid.Visibility = Visibility.Collapsed;
                     insertGridLP.Visibility = Visibility.Collapsed;
                     showGridLP.Visibility = Visibility.Visible;
+                    nthPrimeNumberGrid.Visibility = Visibility.Collapsed;
+                    break;
+                case "nthPrimeNumberGrid":
+                    Welcome.Visibility = Visibility.Collapsed;
+                    checkPrimeGrid.Visibility = Visibility.Collapsed;
+                    insertGridLP.Visibility = Visibility.Collapsed;
+                    showGridLP.Visibility = Visibility.Collapsed;
+                    nthPrimeNumberGrid.Visibility = Visibility.Visible;
                     break;
 
             }
@@ -83,50 +101,24 @@ namespace PrimeNumber2
 
             if (p.IsPrime(p.IDN))
             {
-                showIsPrime.Content = "Is Prime!";
+                showIsPrime.Text = "Is Prime!";
             } else
             {
-                showIsPrime.Content = "Not Prime!";
+                showIsPrime.Text = "Not Prime!";
             }
         }
 
         private void SAVEcheckPrime_Click(object sender, RoutedEventArgs e)
         {
-            //definisce finestra dialogo Win
-            Microsoft.Win32.SaveFileDialog sdlg = new Microsoft.Win32.SaveFileDialog();
-            sdlg.FileName = "MyPrimeNumber";
-            sdlg.DefaultExt = ".txt";
-            sdlg.Filter = "Text documents(.txt)|*.txt";
+            string toSave = $"{insertPrime.Text}, {showIsPrime.Text}";
 
-            //mostra finestra
-            Nullable<bool> show = sdlg.ShowDialog();
-
-            string fileName = null;
-
-            if (show == true)
-            {
-                //ottiene path completa di filename da usr
-                fileName = sdlg.FileName;
-            }
-
-            //se path != null salva file
-            if (fileName != null)
-            {
-                File.WriteAllText(fileName, $"{insertPrime.Text}, {showIsPrime.Content} ");
-            } else
-            {
-                showIsPrime.Content = "Impossibile salvare";
-            }
-            
-
+            Save("MyPrimeNumber", toSave, showIsPrime);
             
         }
 
         private void ListPrime_Click(object sender, RoutedEventArgs e)
         {
-            //nasconde Welcome mostra griglia list prime insert view
             CollapseOtherViews("insertGridLP");
-           
         }
 
 
@@ -141,15 +133,57 @@ namespace PrimeNumber2
             Number p = new Number();
 
             List<string> read = p.ListOfPrime(lowerBound, upperBound);
-
+        
             showLP.Text = string.Join(", ", read);
         }
 
         private void SAVElistPrime_Click(object sender, RoutedEventArgs e)
         {
+            string toSave = $"{showLP.Text}";
+
+            Save("MyPrimeNumberList", toSave, showLP);
+
+        }
+
+        private void toMain_Click(object sender, RoutedEventArgs e)
+        {
+            CollapseOtherViews(default);
+        }
+
+        private async void lastCalculated_LayoutUpdatedAsync(object sender, EventArgs e)
+        {
+            long lastPrime = 0; 
+            Number n = new Number();
+            Action a = new Action(() => {
+                lastPrime = n.RetrieveLastPrimeCalc();
+            });
+                
+            //Task retrieve = new Task(a);
+            await Task.Run(a);
+
+            lastCalculated.Content = $"Last prime number calculated: {lastPrime}";
+        }
+
+        private void nthPrimeNumber_Click(object sender, RoutedEventArgs e)
+        {
+            CollapseOtherViews("nthPrimeNumberGrid");
+        }
+
+        private void GOcheckNth_Click(object sender, RoutedEventArgs e)
+        {
+            //do sth
+        }
+
+        private void SAVEnthPrime_Click(object sender, RoutedEventArgs e)
+        {
+            //do sth to save
+        }
+
+        private void Save(string defaultName, string toSave, TextBlock t)
+        {
             //definisce finestra dialogo Win
             Microsoft.Win32.SaveFileDialog sdlg = new Microsoft.Win32.SaveFileDialog();
-            sdlg.FileName = "MyPrimeNumberList";
+            sdlg.FileName = defaultName;
             sdlg.DefaultExt = ".txt";
             sdlg.Filter = "Text documents(.txt)|*.txt";
 
@@ -167,17 +201,12 @@ namespace PrimeNumber2
             //se path != null salva file
             if (fileName != null)
             {
-                File.WriteAllText(fileName, $"{showLP.Text} ");
+                File.WriteAllText(fileName, $"{toSave} ");
             }
             else
             {
-                showIsPrime.Content = "Impossibile salvare";
+                t.Text = "Impossibile salvare";
             }
-        }
-
-        private void toMain_Click(object sender, RoutedEventArgs e)
-        {
-            CollapseOtherViews(default);
         }
     }
 }

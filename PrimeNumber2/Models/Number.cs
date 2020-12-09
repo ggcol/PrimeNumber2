@@ -58,7 +58,7 @@ namespace PrimeNumber2.Models
             using (NumbersContext cont = new NumbersContext())
             {
                 lastRetrieved = cont.Numbers
-                    .OrderByDescending(p => p.IDN)
+                    .OrderBy(p => p.IDN)
                     .Select(p => p.IDN)
                     .LastOrDefault();
                     

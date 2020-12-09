@@ -12,6 +12,7 @@
           Style="{StaticResource BaseGrid}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="Left"></ColumnDefinition>
+            <ColumnDefinition x:Name="Center"></ColumnDefinition>
             <ColumnDefinition x:Name="Right"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -23,14 +24,16 @@
             <RowDefinition x:Name="Bottom"
                            Height="*"></RowDefinition>
             <RowDefinition x:Name="Footer" Height="100"></RowDefinition>
+            <RowDefinition x:Name="ContinuosCalc" Height="30"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Label x:Name="Welcome" 
-                   Grid.ColumnSpan="2" 
+                   Grid.ColumnSpan="3" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center"
                    FontSize="20"
                    >Welcome To PrimeNumbers Calc
+            
         </Label>
 
         <Button x:Name="CheckPrime" 
@@ -56,7 +59,7 @@
         <Grid x:Name="checkPrimeGrid"
               Style="{StaticResource BaseGrid}"
               Visibility="Collapsed"
-              Grid.ColumnSpan="2">
+              Grid.ColumnSpan="3">
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -78,14 +81,11 @@
                     Click="GOcheckPrime_Click">Check
             </Button>
 
-            <Label Name="showIsPrime"
+            <TextBlock Name="showIsPrime"
                    Grid.Column="2"
-                   FontSize="20"
-                   BorderBrush="Azure"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center">
+                   Style="{StaticResource GenericTextBlock}">
                 
-            </Label>
+            </TextBlock>
 
             <Button x:Name="SAVEcheckPrime"
                     Grid.Column="3"
@@ -94,10 +94,66 @@
             </Button>
         </Grid>
 
+        <Button x:Name="nthPrimeNumber"
+                Grid.Column="1"
+                Grid.Row="1"
+                Style="{StaticResource GenericButton}"
+                Content="nthPrimeNumber()"
+                Click="nthPrimeNumber_Click"
+                >
+        </Button>
+
+        <TextBlock x:Name="nthExp"
+            Grid.Column="1"
+            Grid.Row="2"
+            Style="{StaticResource GenericTextBlock }"
+            >
+             Use this function to obtain the n-th Prime Number.
+            <LineBreak></LineBreak>
+            It also allows to save and export data to a textFile.
+        </TextBlock>
+        
+        <!-- nth PrimeNumber View -->
+        <Grid x:Name="nthPrimeNumberGrid"
+              Grid.ColumnSpan="3"
+              Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox x:Name="insertNthPrime" 
+                 Grid.Column="0"
+                 Grid.Row="0"
+                 Style="{StaticResource GenericTextBox}"
+                 >Insert (nth)Value
+            </TextBox>
+
+            <Button x:Name="GOcheckNth"
+                    Grid.Column="1"
+                    Style="{StaticResource GenericButton}"
+                    Click="GOcheckNth_Click">Check
+            </Button>
+
+            <TextBlock Name="showNthPrime"
+                   Grid.Column="2"
+                   Style="{StaticResource GenericTextBlock}">
+
+            </TextBlock>
+
+            <Button x:Name="SAVEnthPrime"
+                    Grid.Column="3"
+                    Style="{StaticResource GenericButton}"
+                    Click="SAVEnthPrime_Click">Save...
+            </Button>
+
+        </Grid>
 
 
         <Button x:Name="ListPrime" 
-                Grid.Column="1" 
+                Grid.Column="2" 
                 Grid.Row="1" 
                 Content="listPrime()"
                 Style="{StaticResource GenericButton}"
@@ -106,7 +162,7 @@
         </Button>
         
         <TextBlock x:Name="lpExp"
-            Grid.Column="1"
+            Grid.Column="2"
             Grid.Row="2"
             Style="{StaticResource GenericTextBlock }"
             >
@@ -118,7 +174,7 @@
         <!-- list prime insert view -->
         <Grid x:Name="insertGridLP"
               Style="{StaticResource BaseGrid}"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
               Visibility="Collapsed">
 
             <Grid.ColumnDefinitions>
@@ -158,7 +214,7 @@
         <!-- list prime show grid -->
         <Grid x:Name="showGridLP"
               Style="{StaticResource BaseGrid}"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
               Visibility="Collapsed">
             
             <Grid.ColumnDefinitions>
@@ -175,7 +231,7 @@
             </ScrollViewer>
 
             <Button x:Name="SAVElistPrime"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Style="{StaticResource GenericButton}"
                     Click="SAVElistPrime_Click">Save...</Button>
 
@@ -183,11 +239,20 @@
         </Grid>
 
         <Button x:Name="toMain"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="1"
                 Grid.Row="3"
                 Style="{StaticResource GenericButton}"
                 Click="toMain_Click">Back to Main
         </Button>
+        
+        
+        <Label Name="lastCalculated"
+               Grid.Column="2"
+               Grid.Row="4" 
+               LayoutUpdated="lastCalculated_LayoutUpdatedAsync"
+               >
+            Keep calculating prime numbers:
+        </Label>
 
     </Grid>
 
