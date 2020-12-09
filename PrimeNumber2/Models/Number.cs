@@ -12,7 +12,8 @@ namespace PrimeNumber2.Models
     {
         public virtual long IDN { get; set; }
         public virtual Guid Position { get; set; }
-     
+        public virtual long NTH { get; set; }
+
         public bool IsPrime(long l)
         {
             if (l < 2) return false;
@@ -29,9 +30,11 @@ namespace PrimeNumber2.Models
         {
 
             long flag = RetrieveLastPrimeCalc();
+            long NTHflag = RetrieveLastNTHPrimeCalc();
 
             if (flag < 2) flag = 2;
-            
+            if (NTHflag <= 0) NTHflag = 1;
+
             NumbersContext c = new NumbersContext();
 
             for (flag = flag; flag <= long.MaxValue; flag++)
@@ -40,8 +43,10 @@ namespace PrimeNumber2.Models
                 {
                     Number p = new Number();
                     p.IDN = flag;
+                    p.NTH = NTHflag;
                     c.Add(p);
                     c.SaveChanges();
+                    NTHflag++;
                 }
             }
         }
@@ -61,14 +66,34 @@ namespace PrimeNumber2.Models
                     .OrderBy(p => p.IDN)
                     .Select(p => p.IDN)
                     .LastOrDefault();
-                    
+
             }
 
             return lastRetrieved;
 
         }
 
-        
+        public long RetrieveLastNTHPrimeCalc()
+        {
+            long lastRetrived;
+
+            using (NumbersContext cont = new NumbersContext())
+            {
+                lastRetrived = cont.Numbers
+                    .OrderBy(p => p.NTH)
+                    .Select(p => p.NTH)
+                    .LastOrDefault();
+            }
+
+            return lastRetrived;
+        }
+
+        /// <summary>
+        /// ritorna una lista di numeri primi come stringhe
+        /// </summary>
+        /// <param name="lowerBound">exp</param>
+        /// <param name="upperBound">exp</param>
+        /// <returns></returns>
         public List<string> ListOfPrime(long lowerBound, long upperBound)
         {
             //check per popolazione DB
@@ -112,6 +137,21 @@ namespace PrimeNumber2.Models
 
             return exit;
 
+        }
+
+        public string RetrieveNthPrime(long userNth)
+        {
+            var nth = "";
+
+            using (NumbersContext cont = new NumbersContext())
+            {
+                nth = cont.Numbers
+                    .Where(p => p.NTH == userNth)
+                    .Select(p => p.IDN.ToString())
+                    .FirstOrDefault();
+            }
+
+            return nth;
         }
 
 

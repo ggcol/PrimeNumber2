@@ -112,7 +112,7 @@ namespace PrimeNumber2
         {
             string toSave = $"{insertPrime.Text}, {showIsPrime.Text}";
 
-            Save("MyPrimeNumber", toSave, showIsPrime);
+            SaveWithDialog("MyPrimeNumber", toSave, showIsPrime);
             
         }
 
@@ -141,7 +141,7 @@ namespace PrimeNumber2
         {
             string toSave = $"{showLP.Text}";
 
-            Save("MyPrimeNumberList", toSave, showLP);
+            SaveWithDialog("MyPrimeNumberList", toSave, showLP);
 
         }
 
@@ -171,7 +171,8 @@ namespace PrimeNumber2
 
         private void GOcheckNth_Click(object sender, RoutedEventArgs e)
         {
-            //do sth
+            Number n = new Number();
+            showNthPrime.Text = n.RetrieveNthPrime(Convert.ToInt32(insertNthPrime.Text));
         }
 
         private void SAVEnthPrime_Click(object sender, RoutedEventArgs e)
@@ -179,7 +180,7 @@ namespace PrimeNumber2
             //do sth to save
         }
 
-        private void Save(string defaultName, string toSave, TextBlock t)
+        private void SaveWithDialog(string defaultName, string toSave, TextBlock t)
         {
             //definisce finestra dialogo Win
             Microsoft.Win32.SaveFileDialog sdlg = new Microsoft.Win32.SaveFileDialog();

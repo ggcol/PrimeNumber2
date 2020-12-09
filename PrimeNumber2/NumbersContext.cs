@@ -37,6 +37,11 @@ namespace PrimeNumber2
                 .ValueGeneratedOnAdd()
                 .HasColumnName("Position")
                 .HasColumnType("Guid");
+
+                entity.Property(e => e.NTH)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("NTH")
+                .HasColumnType("bigint");
             });
         }
 
