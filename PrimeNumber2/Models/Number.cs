@@ -14,6 +14,11 @@ namespace PrimeNumber2.Models
         public virtual Guid Position { get; set; }
         public virtual long NTH { get; set; }
 
+        /// <summary>
+        /// check per primalità numero
+        /// </summary>
+        /// <param name="l">il numero di cui testare la primalità</param>
+        /// <returns></returns>
         public bool IsPrime(long l)
         {
             if (l < 2) return false;
@@ -26,6 +31,9 @@ namespace PrimeNumber2.Models
             return true;
         }
 
+        /// <summary>
+        /// continua calcolo numeri primi da ultimo su db
+        /// </summary>
         public void ContinuosCalc()
         {
 
