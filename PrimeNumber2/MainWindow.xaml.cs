@@ -28,7 +28,7 @@ namespace PrimeNumber2
             InitializeComponent();
 
             Number n = new Number();
-            Task.Run(new Action(() => n.IsPrimeImpl()));
+            Task.Run(new Action(() => n.ContinuosCalc()));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace PrimeNumber2
         {
             
             CollapseOtherViews("checkPrimeGrid");
-                                   
+           
         }
 
         private void GOcheckPrime_Click(object sender, RoutedEventArgs e)
@@ -81,7 +81,7 @@ namespace PrimeNumber2
                 IDN = Convert.ToInt64(insertPrime.Text)
             };
 
-            if (p.IsPrime2(p.IDN))
+            if (p.IsPrime(p.IDN))
             {
                 showIsPrime.Content = "Is Prime!";
             } else

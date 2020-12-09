@@ -13,7 +13,7 @@ namespace PrimeNumber2.Models
         public virtual long IDN { get; set; }
         public virtual Guid Position { get; set; }
      
-        public bool IsPrime2(long l)
+        public bool IsPrime(long l)
         {
             if (l < 2) return false;
 
@@ -25,38 +25,60 @@ namespace PrimeNumber2.Models
             return true;
         }
 
-        public void IsPrimeImpl()
+        public void ContinuosCalc()
         {
+
+            long flag = RetrieveLastPrimeCalc();
+
+            if (flag < 2) flag = 2;
+            
             NumbersContext c = new NumbersContext();
-            for (long flag = 2; flag <= short.MaxValue; flag++)
+
+            for (flag = flag; flag <= long.MaxValue; flag++)
             {
-                if (IsPrime2(flag) == true)
+                if (IsPrime(flag) == true)
                 {
                     Number p = new Number();
                     p.IDN = flag;
+                    c.Add(p);
                     c.SaveChanges();
                 }
             }
         }
 
-        //public async void Populate()
-        //{
-        //    Task t1 = new Task();
-        //    await t1.IsPrimeImpl();
+        /// <summary>
+        /// Recupera ultimo numero primo calcolato su DB
+        /// </summary>
+        /// <returns></returns>
+        public long RetrieveLastPrimeCalc()
+        {
 
+            long lastRetrieved;
 
-        //}
+            using (NumbersContext cont = new NumbersContext())
+            {
+                lastRetrieved = cont.Numbers
+                    .OrderByDescending(p => p.IDN)
+                    .Select(p => p.IDN)
+                    .LastOrDefault();
+                    
+            }
 
+            return lastRetrieved;
+
+        }
+
+        
         public List<string> ListOfPrime(long lowerBound, long upperBound)
         {
             //check per popolazione DB
-            long max = 735839;
+            long max = RetrieveLastPrimeCalc();
             List<string> exit = new List<string>();
             List<string> stringexit = new List<string>();
 
             if (upperBound > max)
             {
-                exit.Add("This number is too high.");
+                exit.Add($"This number is too high. Try with n < {max}!");
 
             }
             else if (lowerBound < 2)
@@ -66,7 +88,7 @@ namespace PrimeNumber2.Models
             }
             else if (lowerBound == upperBound)
             {
-                if (IsPrime2(lowerBound))
+                if (IsPrime(lowerBound))
                 {
                     exit.Add($"Lucky shoot. {lowerBound} is a prime number!");
                 }

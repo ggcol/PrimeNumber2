@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrimeNumber2;
 
 namespace PrimeNumber2.Migrations
 {
     [DbContext(typeof(NumbersContext))]
-    partial class NumbersContextModelSnapshot : ModelSnapshot
+    [Migration("20201209083218_1.2_Guid")]
+    partial class _12_Guid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +26,7 @@ namespace PrimeNumber2.Migrations
                     b.Property<Guid>("Position")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("Guid")
-                        .HasColumnName("Pos");
+                        .HasColumnName("Position");
 
                     b.Property<long>("IDN")
                         .HasColumnType("bigint")

@@ -11,7 +11,7 @@ namespace PrimeNumber2.Migrations
                 name: "Numbers",
                 columns: table => new
                 {
-                    Position = table.Column<Guid>(type: "int primary key identity", nullable: false),
+                    Position = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IDN = table.Column<long>(type: "bigint", nullable: false)
                 });
                 //constraints: table =>

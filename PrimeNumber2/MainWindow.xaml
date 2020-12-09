@@ -142,7 +142,8 @@
                  
                  Grid.Column="1"
                  Grid.Row="0"
-                Style="{StaticResource GenericTextBox}">
+                Style="{StaticResource GenericTextBox}"
+                >
                 Insert Upper Bound</TextBox>
 
             <Button x:Name="GOlistPrime"
