@@ -23,7 +23,7 @@ namespace PrimeNumber2
     /// </summary>
     public partial class MainWindow : Window
     {
-        Number n = new Number();
+        Models.PrimeNumber n = new Models.PrimeNumber();
 
         public MainWindow()
         {
@@ -48,8 +48,9 @@ namespace PrimeNumber2
         private async void lastCalculated_LayoutUpdatedAsync(object sender, EventArgs e)
         {
             long lastPrime = 0;
-            Action a = new Action(() => {
-                lastPrime = n.RetrieveLastPrimeCalc();
+            Action a = new Action(() =>
+            {
+                lastPrime = n.RetrieveLastPrimeCalc().IDN;
             });
 
             await Task.Run(a);
@@ -114,10 +115,10 @@ namespace PrimeNumber2
         private void GOcheckNth_Click(object sender, RoutedEventArgs e)
         {
             long userNth = Convert.ToInt32(insertNthPrime.Text);
-            long max = n.RetrieveLastPrimeCalc();
-            if (userNth < 2)
+            long max = n.RetrieveLastPrimeCalc().IDN;
+            if (userNth < 1)
             {
-                showNthPrime.Text = "No prime number < 2 by definition";
+                showNthPrime.Text = "Try with n >= 1";
             } else if (userNth > max)
             {
                 showNthPrime.Text = $"Try with n < {max}";

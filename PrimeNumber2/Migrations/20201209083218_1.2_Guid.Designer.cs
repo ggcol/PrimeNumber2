@@ -9,7 +9,7 @@ using PrimeNumber2;
 
 namespace PrimeNumber2.Migrations
 {
-    [DbContext(typeof(NumbersContext))]
+    [DbContext(typeof(PrimeNumberContext))]
     [Migration("20201209083218_1.2_Guid")]
     partial class _12_Guid
     {
