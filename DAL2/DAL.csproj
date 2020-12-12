@@ -1,9 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,11 +12,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="5.1.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BL2\BL.csproj" />
-    <ProjectReference Include="..\DAL2\DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using PrimeNumber2.Models;
 using Microsoft.Win32;
 using System.IO;
+using BL;
+using DAL;
 
 namespace PrimeNumber2
 {
@@ -24,6 +26,8 @@ namespace PrimeNumber2
     public partial class MainWindow : Window
     {
         Models.PrimeNumber n = new Models.PrimeNumber();
+        Op op = new Op();
+        DbGnome gnome = new DbGnome();
 
         public MainWindow()
         {
@@ -37,7 +41,7 @@ namespace PrimeNumber2
         /// </summary>
         public async void BgCalcAsync()
         {
-            await Task.Run(new Action(() => n.ContinuosCalc()));
+            await Task.Run(new Action(() => op.ContinuosCalc()));
         }
 
         /// <summary>
@@ -50,7 +54,7 @@ namespace PrimeNumber2
             long lastPrime = 0;
             Action a = new Action(() =>
             {
-                lastPrime = n.RetrieveLastPrimeCalc().IDN;
+                lastPrime = gnome.RetrieveLastPrimeCalc().IDN;
             });
 
             await Task.Run(a);
@@ -93,7 +97,7 @@ namespace PrimeNumber2
             long lowerBound = Convert.ToInt64(insertLowerBound.Text);
             long upperBound = Convert.ToInt64(insertUpperBound.Text);
 
-            List<string> read = n.ListOfPrime(lowerBound, upperBound);
+            List<string> read = gnome.ListOfPrime(lowerBound, upperBound);
 
             showLP.Text = string.Join(", ", read);
         }
@@ -102,7 +106,7 @@ namespace PrimeNumber2
         {
             n.IDN = Convert.ToInt64(insertPrime.Text);
 
-            if (n.IsPrime(n.IDN))
+            if (op.IsPrime(n.IDN))
             {
                 showIsPrime.Text = "Is Prime!";
             }
@@ -115,7 +119,7 @@ namespace PrimeNumber2
         private void GOcheckNth_Click(object sender, RoutedEventArgs e)
         {
             long userNth = Convert.ToInt32(insertNthPrime.Text);
-            long max = n.RetrieveLastPrimeCalc().IDN;
+            long max = gnome.RetrieveLastPrimeCalc().IDN;
             if (userNth < 1)
             {
                 showNthPrime.Text = "Try with n >= 1";
@@ -124,7 +128,7 @@ namespace PrimeNumber2
                 showNthPrime.Text = $"Try with n < {max}";
             } else
             {
-                showNthPrime.Text = n.RetrieveNthPrime(userNth);
+                showNthPrime.Text = gnome.RetrieveNthPrime(userNth);
             }
             
         }
@@ -150,6 +154,7 @@ namespace PrimeNumber2
         private void SAVEnthPrime_Click(object sender, RoutedEventArgs e)
         {
             string toSave = $"{insertNthPrime.Text}th prime number is: {showNthPrime.Text}";
+
             SaveWithDialog("MyN-thPrimeNumber", toSave, showNthPrime);
         }
         #endregion savingMethods
