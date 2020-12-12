@@ -35,15 +35,15 @@ namespace DAL
 
         }
 
-        public string RetrieveNthPrime(long userNth)
+        public PrimeNumber RetrieveNthPrime(long userNth)
         {
-            var nth = "";
+            PrimeNumber nth = null;
 
             using (PrimeNumberContext cont = new PrimeNumberContext())
             {
                 nth = cont.PrimeNumbers
                     .Where(p => p.NTH == userNth)
-                    .Select(p => p.IDN.ToString())
+                    .Select(p => p)
                     .FirstOrDefault();
             }
 
@@ -51,38 +51,28 @@ namespace DAL
         }
 
         /// <summary>
-        /// ritorna una lista di numeri primi come stringhe
+        /// ritorna una lista di numeri primi
         /// </summary>
         /// <param name="lowerBound">exp</param>
         /// <param name="upperBound">exp</param>
         /// <returns></returns>
-        public List<string> ListOfPrime(long lowerBound, long upperBound)
+        public List<PrimeNumber> ListOfPrimeMod(long lowerBound, long upperBound, out string msg)
         {
             //check per popolazione DB
             long max = RetrieveLastPrimeCalc().IDN;
-            List<string> exit = new List<string>();
+            List<PrimeNumber> exit = new List<PrimeNumber>();
 
 
             if (upperBound > max)
             {
-                exit.Add($"This number is too high. Try with n < {max}!");
+                msg = $"This number is too high. Try with n < { max}!";
+                return exit;
 
             }
             else if (lowerBound < 2)
             {
-                exit.Add("No Prime Number < 2 for definition.");
-
-            }
-            else if (lowerBound == upperBound)
-            {
-                if (IsPrime(lowerBound))
-                {
-                    exit.Add($"Lucky shoot. {lowerBound} is a prime number!");
-                }
-                else
-                {
-                    exit.Add("You should enter a wider range");
-                }
+                msg = "No Prime Number < 2 for definition.";
+                return exit;
 
             }
             else
@@ -91,15 +81,20 @@ namespace DAL
                 {
                     exit = context.PrimeNumbers
                         .Where(p => p.IDN >= lowerBound && p.IDN <= upperBound)
-                        .Select(p => p.IDN.ToString())
+                        .Select(p => p)
                         .ToList();
                 }
-
             }
-
+            msg = null;
             return exit;
-
         }
+
+
+
+
+
+
+
 
         public bool IsPrime(long l)
         {

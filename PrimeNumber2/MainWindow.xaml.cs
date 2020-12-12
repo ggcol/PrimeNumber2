@@ -17,6 +17,8 @@ using Microsoft.Win32;
 using System.IO;
 using BL;
 using DAL;
+using CsvHelper;
+using System.Globalization;
 
 namespace PrimeNumber2
 {
@@ -89,7 +91,7 @@ namespace PrimeNumber2
 
         //used with button to show a result
         #region goMethods
-        private void GOlistPrime_Click(object sender, RoutedEventArgs e)
+        private async void GOlistPrime_ClickAsync(object sender, RoutedEventArgs e)
         {
 
             CollapseOtherViews("showGridLP");
@@ -97,9 +99,28 @@ namespace PrimeNumber2
             long lowerBound = Convert.ToInt64(insertLowerBound.Text);
             long upperBound = Convert.ToInt64(insertUpperBound.Text);
 
-            List<string> read = gnome.ListOfPrime(lowerBound, upperBound);
+            List<PrimeNumber> read = new List<PrimeNumber>();
 
-            showLP.Text = string.Join(", ", read);
+            showLP.Text = "ready... steady...";
+
+            string msg = "";
+
+            await Task.Run(new Action(() =>
+            {
+                read = gnome.ListOfPrimeMod(lowerBound, upperBound, out msg);
+
+            }));
+
+            if (msg == null)
+            {
+                showLP.Text = string.Join(", ", read.Select(p => p.IDN));
+            } else
+            {
+                showLP.Text = msg;
+            }
+            
+
+
         }
 
         private void GOcheckPrime_Click(object sender, RoutedEventArgs e)
@@ -116,21 +137,33 @@ namespace PrimeNumber2
             }
         }
 
-        private void GOcheckNth_Click(object sender, RoutedEventArgs e)
+        private async void GOcheckNth_ClickAsync(object sender, RoutedEventArgs e)
         {
             long userNth = Convert.ToInt32(insertNthPrime.Text);
             long max = gnome.RetrieveLastPrimeCalc().IDN;
+
             if (userNth < 1)
             {
                 showNthPrime.Text = "Try with n >= 1";
-            } else if (userNth > max)
+            }
+            else if (userNth > max)
             {
                 showNthPrime.Text = $"Try with n < {max}";
-            } else
-            {
-                showNthPrime.Text = gnome.RetrieveNthPrime(userNth);
             }
-            
+            else
+            {
+                showNthPrime.Text = "ready... steady...";
+
+                string retrieved = null;
+
+                await Task.Run(new Action(() =>
+                {
+                    retrieved = gnome.RetrieveNthPrime(userNth).IDN.ToString();
+                }));
+
+                showNthPrime.Text = retrieved;
+            }
+
         }
         #endregion goMethods
 
@@ -139,28 +172,47 @@ namespace PrimeNumber2
         {
             string toSave = $"{insertPrime.Text}, {showIsPrime.Text}";
 
-            SaveWithDialog("MyPrimeNumber", toSave, showIsPrime);
+            SaveTxtWithDialog("MyPrimeNumber", toSave, showIsPrime);
 
         }
 
-        private void SAVElistPrime_Click(object sender, RoutedEventArgs e)
+        private void SAVElistPrime_ClickAsTxt(object sender, RoutedEventArgs e)
         {
             string toSave = $"{showLP.Text}";
 
-            SaveWithDialog("MyPrimeNumberList", toSave, showLP);
+            SaveTxtWithDialog("MyPrimeNumberList", toSave, showLP);
 
+        }
+
+        private void SAVElistPrimeAsCsv_Click(object sender, RoutedEventArgs e)
+        {
+            long upperBound = Convert.ToInt64(insertUpperBound.Text);
+            long lowerBound = Convert.ToInt64(insertLowerBound.Text);
+
+            string msg;
+
+            List<PrimeNumber> list = gnome.ListOfPrimeMod(lowerBound, upperBound, out msg);
+            SaveCsvWithDialog("MyPrimeNumberList", list, showLP);
         }
 
         private void SAVEnthPrime_Click(object sender, RoutedEventArgs e)
         {
             string toSave = $"{insertNthPrime.Text}th prime number is: {showNthPrime.Text}";
 
-            SaveWithDialog("MyN-thPrimeNumber", toSave, showNthPrime);
+            SaveTxtWithDialog("MyN-thPrimeNumber", toSave, showNthPrime);
+        }
+
+        private void SaventhPrimeAsCsv_Click(object sender, RoutedEventArgs e)
+        {
+            long userNth = Convert.ToInt32(insertNthPrime.Text);
+            List<PrimeNumber> list = new List<PrimeNumber>();
+            list.Add(gnome.RetrieveNthPrime(userNth));
+            SaveCsvWithDialog("MyN-thPrimeNumber", list, showNthPrime);
         }
         #endregion savingMethods
 
         #region helpers
-        private void SaveWithDialog(string defaultName, string toSave, TextBlock t)
+        private void SaveTxtWithDialog(string defaultName, string toSave, TextBlock t)
         {
             //definisce finestra dialogo Win
             Microsoft.Win32.SaveFileDialog sdlg = new Microsoft.Win32.SaveFileDialog();
@@ -183,6 +235,43 @@ namespace PrimeNumber2
             if (fileName != null)
             {
                 File.WriteAllText(fileName, $"{toSave} ");
+            }
+            else
+            {
+                t.Text = "Impossibile salvare";
+            }
+        }
+
+        private void SaveCsvWithDialog(string defaultName, List<PrimeNumber> list, TextBlock t)
+        {
+            //definisce finestra dialogo Win
+            Microsoft.Win32.SaveFileDialog sdlg = new Microsoft.Win32.SaveFileDialog();
+            sdlg.FileName = defaultName;
+            sdlg.DefaultExt = ".csv";
+            sdlg.Filter = "CSV file (.csv)|*.csv";
+
+            //mostra finestra
+            Nullable<bool> show = sdlg.ShowDialog();
+
+            string fileName = null;
+
+            if (show == true)
+            {
+                //ottiene path completa di filename da usr
+                fileName = sdlg.FileName;
+            }
+
+            //se path != null salva file
+            if (fileName != null)
+            {
+                using (var writer = new StreamWriter(fileName))
+
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteHeader<PrimeNumber>();
+                    csv.NextRecord();
+                    csv.WriteRecords(list);
+                }
             }
             else
             {
@@ -236,6 +325,9 @@ namespace PrimeNumber2
 
             }
         }
+
         #endregion helpers
+
+
     }
 }

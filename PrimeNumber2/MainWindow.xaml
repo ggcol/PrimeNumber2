@@ -123,6 +123,10 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
             
             <TextBox x:Name="insertNthPrime" 
                  Grid.Column="0"
@@ -133,20 +137,31 @@
 
             <Button x:Name="GOcheckNth"
                     Grid.Column="1"
+                    Grid.Row="0"
                     Style="{StaticResource GenericButton}"
-                    Click="GOcheckNth_Click">Check
+                    Click="GOcheckNth_ClickAsync">Check
             </Button>
 
             <TextBlock Name="showNthPrime"
                    Grid.Column="2"
+                       Grid.Row="0"
                    Style="{StaticResource GenericTextBlock}">
 
             </TextBlock>
 
             <Button x:Name="SAVEnthPrime"
                     Grid.Column="3"
+                    Grid.Row="0"
                     Style="{StaticResource GenericButton}"
-                    Click="SAVEnthPrime_Click">Save...
+                    Click="SAVEnthPrime_Click">Save as .txt...
+            </Button>
+            <Button x:Name="SaventhPrimeAsCsv"
+                    Grid.Column="3"
+                    Grid.Row="1"
+                    Style="{StaticResource GenericButton}"
+                    Click="SaventhPrimeAsCsv_Click">
+                Save as .csv...
+                
             </Button>
 
         </Grid>
@@ -206,7 +221,7 @@
                     Grid.ColumnSpan="2"
                     Grid.Row="1"
                     Style="{StaticResource GenericButton}"
-                    Click="GOlistPrime_Click">Result...
+                    Click="GOlistPrime_ClickAsync">Result...
             </Button>
 
         </Grid>
@@ -221,20 +236,33 @@
                 <ColumnDefinition Width="4*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <TextBlock x:Name="showLP"
                        Grid.Column="0"
+                       Grid.Row="2"
                        Style="{StaticResource GenericTextBlock}" 
                        >
                 </TextBlock>
             </ScrollViewer>
 
-            <Button x:Name="SAVElistPrime"
+            <Button x:Name="SAVElistPrimeAsTxt"
                     Grid.Column="2"
+                    Grid.Row="0"
                     Style="{StaticResource GenericButton}"
-                    Click="SAVElistPrime_Click">Save...</Button>
+                    Click="SAVElistPrime_ClickAsTxt">Save as .txt...
+            </Button>
 
+            <Button x:Name="SAVElistPrimeAsCsv"
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Style="{StaticResource GenericButton}"
+                    Click="SAVElistPrimeAsCsv_Click">Save as .csv...
+            </Button>
 
         </Grid>
 

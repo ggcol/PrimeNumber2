@@ -1,7 +1,9 @@
 ﻿using DAL;
+using Microsoft.Data.SqlClient;
 using PrimeNumber2.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 
 namespace BL
@@ -22,7 +24,7 @@ namespace BL
             }
             else
             {
-                this.flag = gnome.RetrieveLastPrimeCalc().IDN;
+                this.flag = (gnome.RetrieveLastPrimeCalc().IDN+1);
             }
         }
 
@@ -114,13 +116,19 @@ namespace BL
                     //incrementa di segment*3 (ogni thread controlla 2000n)
                     this.flag += 6000;
                 }
-                catch (TimeoutException ex)
+                catch (Win32Exception win32_ex)
                 {
                     //ci riprova
                     await gnome.PersistPrimeAsync(container);
                     container.Clear();
                     this.flag += 6000;
-
+                } 
+                catch (SqlException s_ex)
+                {
+                    //ci riprova
+                    await gnome.PersistPrimeAsync(container);
+                    container.Clear();
+                    this.flag += 6000;
                 }
 
             } while (this.flag < long.MaxValue);

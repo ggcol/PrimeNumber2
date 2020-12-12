@@ -17,7 +17,7 @@ namespace PrimeNumber2
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(@"Data Source=ABUWIN-MK-IV2;Initial Catalog=abuNumbers;Integrated Security=True");
+                .UseSqlServer(@"Data Source=ABUWIN-MK-IV2;Initial Catalog=abuNum;Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
