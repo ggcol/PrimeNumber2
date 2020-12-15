@@ -34,7 +34,6 @@ namespace PrimeNumber2
         public MainWindow()
         {
             InitializeComponent();
-
             BgCalcAsync();
         }
 

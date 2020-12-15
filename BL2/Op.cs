@@ -15,7 +15,7 @@ namespace BL
         static Semaphore sem;
         private long flag;
 
-        private void InitProflag()
+        private void InitFlag()
         {
 
             if (gnome.RetrieveLastPrimeCalc() == null)
@@ -59,15 +59,14 @@ namespace BL
         public async void ContinuosCalc()
         {
 
-            //inizializza proflag e segna punto da cui ripartire
-            InitProflag();
+            //inizializza flag e segna punto da cui ripartire
+            InitFlag();
             //il semaforo ha un posto "attivo" per un massimo di due totali
             sem = new Semaphore(1, 2);
             List<PrimeNumber> container = new List<PrimeNumber>();
 
             do
             {
-                //3 thread
                 Thread[] th = new Thread[3];
 
                 //faccio partire tre thread

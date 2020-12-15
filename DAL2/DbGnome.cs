@@ -30,7 +30,6 @@ namespace DAL
                     .LastOrDefault();
             }
 
-
             return lastRetrieved;
 
         }
