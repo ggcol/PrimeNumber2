@@ -60,7 +60,7 @@ namespace PrimeNumber2
 
             await Task.Run(a);
 
-            lastCalculated.Content = $"Last prime number calculated: {lastPrime}";
+            lastCalculated.Content = $"Last prime number calculated: {lastPrime}"; 
         }
 
 
@@ -208,7 +208,7 @@ namespace PrimeNumber2
             list.Add(gnome.RetrieveNthPrime(userNth));
             SaveCsvWithDialog("MyN-thPrimeNumber", list, showNthPrime);
         }
-        #endregion savingMethods
+        #endregion savingMethods 
 
         #region helpers
         private void SaveTxtWithDialog(string defaultName, string toSave, TextBlock t)

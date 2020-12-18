@@ -62,7 +62,8 @@ namespace BL
             //inizializza flag e segna punto da cui ripartire
             InitFlag();
             //il semaforo ha un posto "attivo" per un massimo di due totali
-            sem = new Semaphore(1, 2);
+            //edit (update ram) tre posti per un massimo di tre
+            sem = new Semaphore(3, 3);
             List<PrimeNumber> container = new List<PrimeNumber>();
 
             do
@@ -73,7 +74,7 @@ namespace BL
                 for (int i = 0; i < th.Length; i++)
                 {
                     //segment = porzione di numeri da analizzare
-                    long segment = this.flag + 2000;
+                    long segment = this.flag + 100000;
 
                     //inizializza thread per
                     th[i] = new Thread(new ThreadStart(() =>
@@ -101,7 +102,7 @@ namespace BL
                     th[i].Start();
                     //attende gli altri prima di continuare
                     th[i].Join();
-                    this.flag += 2000;
+                    this.flag += 100000;
                 }
 
                 //ordina lista
@@ -110,24 +111,24 @@ namespace BL
                 try
                 {
                     //cerca di persistere
-                    await gnome.PersistPrimeAsync(container);
+                    await gnome.PersistPrimeAsync(container).ConfigureAwait(false);
                     container.Clear();
                     //incrementa di segment*3 (ogni thread controlla 2000n)
-                    this.flag += 6000;
+                    this.flag += 300000;
                 }
                 catch (Win32Exception win32_ex)
                 {
                     //ci riprova
                     await gnome.PersistPrimeAsync(container);
                     container.Clear();
-                    this.flag += 6000;
+                    this.flag += 300000;
                 } 
                 catch (SqlException s_ex)
                 {
                     //ci riprova
                     await gnome.PersistPrimeAsync(container);
                     container.Clear();
-                    this.flag += 6000;
+                    this.flag += 300000;
                 }
 
             } while (this.flag < long.MaxValue);
